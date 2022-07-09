@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+- docker build -t mitre90/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true mitre90/react-test npm test
+
+after_success:
+  - docker build -t mitre90/multi-client ./client
+  - docker build -t mitre90/multi-nginx ./nginx
+  - docker build -t mitre90/multi-server ./server
+  - docker build -t mitre90/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push mitre90/multi-client
+  - docker push mitre90/multi-nginx
+  - docker push mitre90/multi-server
+  - docker push mitre90/multi-worker
