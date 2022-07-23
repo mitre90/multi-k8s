@@ -1,6 +1,7 @@
 docker build -t mitre90/multi-client:latest -t mitre90/multi-client:$SHA -f ./client/Dockerfile ./client
 docker build -t mitre90/multi-server:latest -t mitre90/multi-server:$SHA -f ./server/Dockerfile ./server
 docker build -t mitre90/multi-worker:latest -t mitre90/multi-worker:$SHA -f ./worker/Dockerfile ./worker
+
 docker push mitre90/multi-client:latest
 docker push mitre90/multi-server:latest
 docker push mitre90/multi-worker:latest
